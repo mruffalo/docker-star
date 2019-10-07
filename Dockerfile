@@ -14,8 +14,13 @@ ADD https://github.com/alexdobin/STAR/archive/${star_version}.tar.gz /opt
 WORKDIR /opt
 RUN tar -xzf ${star_version}.tar.gz
 WORKDIR /opt/STAR-${star_version}/source
-RUN make
+RUN make && mv STAR /opt
 
 FROM ubuntu:18.04 as RELEASE
+ENV star_version 2.6.1e
 
-COPY --from=BASE /opt/STAR-${star_version}/source/STAR /usr/local/bin
+MAINTAINER Matt Ruffalo <mruffalo@cs.cmu.edu>
+
+LABEL description="Image for STAR aligner version 2.6.1e"
+
+COPY --from=BASE /opt/STAR /usr/local/bin
